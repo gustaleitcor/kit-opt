@@ -1,54 +1,66 @@
-#include "Data.h"
-#include <iostream>
-#include <vector>
-#include "Construcao.h"
+#include "./moves.h"
+#include "./utils.h"
 #include "BuscaLocal.h"
+#include "Construcao.h"
+#include "Data.h"
 #include "Pertubacao.h"
-#include "./auxFunctions/calcCost.h"
-#include "./auxFunctions/printPath.h"
+#include <iostream>
+#include <numeric>
+#include <vector>
 
-using namespace std;
+int main(int argc, char **argv) {
 
-int main(int argc, char **argv)
-{
+  auto data = Data(argc, argv[1]);
+  data.read();
+  size_t n = data.getDimension();
+  srand(time(NULL));
 
-    auto data = Data(argc, argv[1]);
-    data.read();
-    size_t n = data.getDimension();
+  std::cout << "Dimension: " << n << std::endl;
+  // std::cout << "DistanceMatrix: " << std::endl;
+  // data.printMatrixDist();
 
-    cout << "Dimension: " << n << endl;
-    // cout << "DistanceMatrix: " << endl;
-    // data.printMatrixDist();
+  Solution solution = (Solution){.path = vector<int>(n), .cost = 0};
 
-    vector<int> path;
-    double cost = 0;
+  std::iota(solution.path.begin(), solution.path.end(), 1);
+  solution.cost = calcCost(solution.path, &data);
 
-    for (int i = 0; i < data.getDimension(); i++)
-    {
-        path.push_back(i + 1);
-    }
+  std::cout << "Custo inicial: " << calcCost(solution.path, &data) << std::endl;
 
-    cout << "Custo = " << calcCost(path, &data) << endl;
+  Construcao(solution, &data);
 
-    Construcao(path, &data);
+  std::cout << "Custo após construção: " << solution.cost << std::endl;
 
-    printPath(path);
+  // printPath(path);
+  while (bestImprovementSwap(solution, &data)) {
+  };
 
-    cout << "Custo = " << calcCost(path, &data) << endl;
+  if (calcCost(solution.path, &data) != solution.cost) {
+    std::cout << "lascou" << std::endl;
+    std::cout << calcCost(solution.path, &data) << ' ' << solution.cost
+              << std::endl;
+  }
 
-    for (int i = 0; i < 100; i++)
-        BuscaLocal(path, &data);
+  std::cout << "Custo após swap: " << solution.cost << std::endl;
 
-    printPath(path);
+  return 0;
 
-    cout << "Custo = " << calcCost(path, &data) << endl;
+  for (int i = 0; i < 100; i++)
+    BuscaLocal(solution, &data);
 
-    for (int i = 0; i < 1000; i++)
-        Pertubacao(path, &data);
+  // printPath(path);
 
-    printPath(path);
+  std::cout << "Custo após busca local: " << solution.cost << std::endl;
 
-    cout << "Custo = " << calcCost(path, &data) << endl;
+  return 0;
 
-    return 0;
+  std::cout << "Custo = " << solution.cost << std::endl;
+
+  for (int i = 0; i < 1000; i++)
+    Pertubacao(solution, &data);
+
+  printPath(solution.path);
+
+  std::cout << "Custo = " << solution.cost << std::endl;
+
+  return 0;
 }

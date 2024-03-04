@@ -1,75 +1,73 @@
 #pragma once
+#include "./BuscaLocal.h"
+#include "./utils.h"
 #include "Data.h"
 #include <vector>
-#include "./auxFunctions/randInt.h"
 
-double magnitude = 1;
+const double magnitude = 1;
 
-bool Pertubacao(vector<int> &solution, Data *data)
-{
-    vector<int> solutionCpy(solution);
+inline bool Pertubacao(Solution &solution, Data *data) { return true; }
 
-    int indexA = randInt(0, solutionCpy.size());
-    int sliceSizeA = magnitude * (solutionCpy.size() - randInt(indexA, solutionCpy.size())) / 10 + 1;
+// LEGACY
 
-    int sliceA[sliceSizeA];
+// vector<int> solutionCpy(solution);
 
-    for (int i = 0; i < sliceSizeA; i++)
-    {
-        sliceA[i] = solutionCpy[indexA];
-        solutionCpy.erase(solutionCpy.begin() + indexA);
-    }
+// int indexA = randInt(0, solutionCpy.size());
+// int sliceSizeA =
+//     magnitude * (solutionCpy.size() - randInt(indexA, solutionCpy.size())) /
+//         10 +
+//     1;
 
-    int indexB = randInt(0, solutionCpy.size());
-    int sliceSizeB;
+// int sliceA[sliceSizeA];
 
-    if (indexB < indexA)
-    {
-        sliceSizeB = magnitude * (indexA - randInt(indexB, indexA)) / 10 + 1;
-    }
-    else
-    {
-        sliceSizeB = magnitude * (solutionCpy.size() - randInt(indexB, solutionCpy.size())) / 10 + 1;
-    }
+// for (int i = 0; i < sliceSizeA; i++) {
+//   sliceA[i] = solutionCpy[indexA];
+//   solutionCpy.erase(solutionCpy.begin() + indexA);
+// }
 
-    int sliceB[sliceSizeB];
+// int indexB = randInt(0, solutionCpy.size());
+// int sliceSizeB;
 
-    for (int i = 0; i < sliceSizeB; i++)
-    {
-        sliceB[i] = solutionCpy[indexB];
-        solutionCpy.erase(solutionCpy.begin() + indexB);
-    }
+// if (indexB < indexA) {
+//   sliceSizeB = magnitude * (indexA - randInt(indexB, indexA)) / 10 + 1;
+// } else {
+//   sliceSizeB =
+//       magnitude * (solutionCpy.size() - randInt(indexB, solutionCpy.size()))
+//       /
+//           10 +
+//       1;
+// }
 
-    for (int i = 0; i < solution.size(); i++)
-    {
-        solutionCpy.push_back(-1);
-    }
+// int sliceB[sliceSizeB];
 
-    for (int i = 0; i < sliceSizeA; i++)
-    {
-        solutionCpy.insert(solutionCpy.begin() + indexB, sliceA[i]);
-    }
+// for (int i = 0; i < sliceSizeB; i++) {
+//   sliceB[i] = solutionCpy[indexB];
+//   solutionCpy.erase(solutionCpy.begin() + indexB);
+// }
 
-    for (int i = 0; i < sliceSizeB; i++)
-    {
-        solutionCpy.insert(solutionCpy.begin() + indexA, sliceB[i]);
-    }
+// for (int i = 0; i < solution.size(); i++) {
+//   solutionCpy.push_back(-1);
+// }
 
-    for (int i = solutionCpy.size(); i >= 0; i--)
-    {
-        if (solutionCpy[i] == -1)
-        {
-            solutionCpy.erase(solutionCpy.begin() + i);
-        }
-    }
+// for (int i = 0; i < sliceSizeA; i++) {
+//   solutionCpy.insert(solutionCpy.begin() + indexB, sliceA[i]);
+// }
 
-    BuscaLocal(solutionCpy, data);
+// for (int i = 0; i < sliceSizeB; i++) {
+//   solutionCpy.insert(solutionCpy.begin() + indexA, sliceB[i]);
+// }
 
-    if (calcCost(solutionCpy, data) < calcCost(solution, data))
-    {
-        solution = solutionCpy;
-        return true;
-    }
+// for (int i = solutionCpy.size(); i >= 0; i--) {
+//   if (solutionCpy[i] == -1) {
+//     solutionCpy.erase(solutionCpy.begin() + i);
+//   }
+// }
 
-    return false;
-}
+// BuscaLocal(solutionCpy, data);
+
+// if (calcCost(solutionCpy, data) < calcCost(solution, data)) {
+//   solution = solutionCpy;
+//   return true;
+// }
+
+// return false;
