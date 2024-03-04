@@ -1,5 +1,6 @@
 #pragma once
 #include "utils.h"
+#include <algorithm>
 #include <cstddef>
 #include <vector>
 
@@ -189,55 +190,111 @@ inline bool bestImprovementSwap(Solution &solution, Data *data) {
   return false;
 }
 
-inline bool bestImprovement2Opt(std::vector<int> &solution, Data *data) {
-  std::vector<int> solutionCpy(solution);
+typedef struct Info2opt {
+  size_t i, j;
+  double delta;
+} Info2opt_t;
 
-  int index = randInt(0, solutionCpy.size());
-  int sliceSize = solutionCpy.size() - randInt(index, solutionCpy.size() + 1);
+inline bool bestImprovement2Opt(Solution &solution, Data *data) {
 
-  for (int i = 0; i < sliceSize / 2; i++) {
-    swap(solutionCpy, index + i, index + sliceSize - 1 - i);
+  size_t a, b, c, d;
+  double ab, cd, ac, bd;
+
+  double delta;
+  Info2opt best2opt = (Info2opt){
+      .i = 0,
+      .j = 0,
+      .delta = 0,
+  };
+
+  for (size_t i = 0; i < solution.path.size(); i++) {
+    for (size_t j = i + 2; j < solution.path.size() - 1; j++) {
+      a = solution.path[i];
+      b = solution.path[i + 1];
+      c = solution.path[j];
+      d = solution.path[j + 1];
+
+      ab = data->getDistance(a, b);
+      cd = data->getDistance(c, d);
+
+      ac = data->getDistance(a, c);
+      bd = data->getDistance(b, d);
+
+      delta = ac + bd - (ab + cd);
+
+      if (delta < best2opt.delta) {
+        best2opt.delta = delta;
+        best2opt.i = i + 1;
+        best2opt.j = j + 1;
+      }
+    }
   }
 
-  int originalCost = calcCost(solution, data);
-  int newCost = calcCost(solutionCpy, data);
-
-  if (newCost < originalCost) {
-    solution = solutionCpy;
+  if (best2opt.delta < 0) {
+    solution.cost += best2opt.delta;
+    reverse(solution.path.begin() + best2opt.i,
+            solution.path.begin() + best2opt.j);
     return true;
   }
 
   return false;
 }
 
-inline bool bestImprovementOrOpt(std::vector<int> &solution, Data *data,
-                                 int n) {
+typedef struct OrOptInfo {
+  size_t i, j;
+  double delta;
+} OrOptInfo_t;
 
-  std::vector<int> solutionCpy(solution);
-  int reinsertionNumbers[n];
-  int randomIndex;
+inline bool bestImprovementOrOpt(Solution &solution, Data *data, int n) {
+  size_t a, b, c, d, e, aux;
+  double ab, bc, ac, db, be, de;
+  double delta;
+  OrOptInfo bestOrOp = (OrOptInfo){.i = 0, .j = 0, .delta = 0};
 
-  randomIndex = rand() % (solutionCpy.size() - n);
+  for (size_t i = 1; i < solution.path.size() - 1; i++) {
+    for (size_t j = 0; j < solution.path.size() - 1; j++) {
 
-  for (int i = 0; i < n; i++) {
-    reinsertionNumbers[i] = solutionCpy[randomIndex];
-    solutionCpy.erase(solutionCpy.begin() + randomIndex);
+      if (i == j || i == j + 1)
+        continue;
+
+      a = solution.path[i - 1];
+      b = solution.path[i];
+      c = solution.path[i + 1];
+
+      d = solution.path[j];
+      e = solution.path[j + 1];
+
+      ab = data->getDistance(a, b);
+      bc = data->getDistance(b, c);
+      ac = data->getDistance(a, c);
+
+      db = data->getDistance(d, b);
+      be = data->getDistance(b, e);
+      de = data->getDistance(d, e);
+
+      delta = ac + db + be - (ab + bc + de);
+
+      if (delta < bestOrOp.delta) {
+        bestOrOp.delta = delta;
+        bestOrOp.i = i;
+        bestOrOp.j = j;
+      }
+    }
   }
 
-  randomIndex = rand() % (solutionCpy.size() - n);
+  if (bestOrOp.delta < 0) {
+    if (bestOrOp.i > bestOrOp.j) {
+      bestOrOp.j++;
+    }
 
-  for (int i = n - 1; i > -1; i--) {
-    solutionCpy.insert(solutionCpy.begin() + randomIndex,
-                       reinsertionNumbers[i]);
-  }
+    aux = solution.path[bestOrOp.i];
+    solution.path.erase(solution.path.begin() + bestOrOp.i);
+    solution.path.insert(solution.path.begin() + bestOrOp.j, aux);
 
-  int newCost = calcCost(solutionCpy, data);
-  int originalCost = calcCost(solution, data);
+    solution.cost += bestOrOp.delta;
 
-  if (newCost < originalCost) {
-    solution = solutionCpy;
     return true;
-  } else {
-    return false;
   }
+
+  return false;
 }

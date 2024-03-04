@@ -31,7 +31,9 @@ int main(int argc, char **argv) {
   std::cout << "Custo após construção: " << solution.cost << std::endl;
 
   // printPath(path);
-  while (bestImprovementSwap(solution, &data)) {
+  while (bestImprovementOrOpt(solution, &data, 1)) {
+    printPath(solution.path);
+    std::cout << calcCost(solution.path, &data) << std::endl;
   };
 
   if (calcCost(solution.path, &data) != solution.cost) {
@@ -40,7 +42,7 @@ int main(int argc, char **argv) {
               << std::endl;
   }
 
-  std::cout << "Custo após swap: " << solution.cost << std::endl;
+  std::cout << "Custo após 2opt: " << solution.cost << std::endl;
 
   return 0;
 

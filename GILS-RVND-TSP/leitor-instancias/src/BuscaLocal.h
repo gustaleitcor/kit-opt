@@ -18,16 +18,16 @@ inline void BuscaLocal(Solution &solution, Data *data) {
       improved = bestImprovementSwap(solution, data);
       break;
     case 2:
-      improved = bestImprovement2Opt(solution.path, data);
+      improved = bestImprovement2Opt(solution, data);
       break;
     case 3:
-      improved = bestImprovementOrOpt(solution.path, data, 1);
+      improved = bestImprovementOrOpt(solution, data, 1);
       break;
     case 4:
-      improved = bestImprovementOrOpt(solution.path, data, 2);
+      improved = bestImprovementOrOpt(solution, data, 2);
       break;
     case 5:
-      improved = bestImprovementOrOpt(solution.path, data, 3);
+      improved = bestImprovementOrOpt(solution, data, 3);
       break;
     }
 
