@@ -4,6 +4,7 @@
 #include "Construcao.h"
 #include "Data.h"
 #include "Pertubacao.h"
+#include <exception>
 #include <iostream>
 #include <numeric>
 #include <vector>
@@ -29,20 +30,22 @@ int main(int argc, char **argv) {
   Construcao(solution, &data);
 
   std::cout << "Custo após construção: " << solution.cost << std::endl;
-
+  printPath(solution.path);
   // printPath(path);
-  while (bestImprovementOrOpt(solution, &data, 1)) {
+  int limit = 5;
+  while (bestImprovementOrOpt(solution, &data, 2) && --limit != 0) {
     printPath(solution.path);
     std::cout << calcCost(solution.path, &data) << std::endl;
   };
 
   if (calcCost(solution.path, &data) != solution.cost) {
-    std::cout << "lascou" << std::endl;
     std::cout << calcCost(solution.path, &data) << ' ' << solution.cost
               << std::endl;
+    printPath(solution.path);
+    throw std::exception();
   }
 
-  std::cout << "Custo após 2opt: " << solution.cost << std::endl;
+  std::cout << "Custo após 2-or-opt: " << solution.cost << std::endl;
 
   return 0;
 

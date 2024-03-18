@@ -246,33 +246,36 @@ typedef struct OrOptInfo {
 } OrOptInfo_t;
 
 inline bool bestImprovementOrOpt(Solution &solution, Data *data, int n) {
-  size_t a, b, c, d, e, aux;
-  double ab, bc, ac, db, be, de;
+  size_t a, b, c, d, e, f, aux;
+  double ab, cd, ad, eb, cf, ef;
   double delta;
   OrOptInfo bestOrOp = (OrOptInfo){.i = 0, .j = 0, .delta = 0};
 
-  for (size_t i = 1; i < solution.path.size() - 1; i++) {
-    for (size_t j = 0; j < solution.path.size() - 1; j++) {
+  for (size_t i = 1; i < solution.path.size() - n; i++) {
+    for (size_t j = 1; j < solution.path.size() - 1; j++) {
 
-      if (i == j || i == j + 1)
+      if (j >= i - 1 && j < i + n)
         continue;
+
+      // std::cout << i << ' ' << j << std::endl;
 
       a = solution.path[i - 1];
       b = solution.path[i];
-      c = solution.path[i + 1];
+      c = solution.path[i + n - 1];
+      d = solution.path[i + n];
 
-      d = solution.path[j];
-      e = solution.path[j + 1];
+      e = solution.path[j];
+      f = solution.path[j + 1];
 
       ab = data->getDistance(a, b);
-      bc = data->getDistance(b, c);
-      ac = data->getDistance(a, c);
+      cd = data->getDistance(c, d);
+      ad = data->getDistance(a, d);
 
-      db = data->getDistance(d, b);
-      be = data->getDistance(b, e);
-      de = data->getDistance(d, e);
+      eb = data->getDistance(e, b);
+      cf = data->getDistance(c, f);
+      ef = data->getDistance(e, f);
 
-      delta = ac + db + be - (ab + bc + de);
+      delta = ad + eb + cf - (ab + cd + ef);
 
       if (delta < bestOrOp.delta) {
         bestOrOp.delta = delta;
@@ -283,13 +286,20 @@ inline bool bestImprovementOrOpt(Solution &solution, Data *data, int n) {
   }
 
   if (bestOrOp.delta < 0) {
-    if (bestOrOp.i > bestOrOp.j) {
-      bestOrOp.j++;
-    }
+    // if (bestOrOp.i > bestOrOp.j) {
+    //   bestOrOp.j++;
+    // }
 
-    aux = solution.path[bestOrOp.i];
-    solution.path.erase(solution.path.begin() + bestOrOp.i);
-    solution.path.insert(solution.path.begin() + bestOrOp.j, aux);
+    std::cout << "Best switch " << bestOrOp.i << ' ' << bestOrOp.j << std::endl;
+
+    for (int i = 0; i < n; i++) {
+      aux = solution.path[bestOrOp.i + (bestOrOp.i > bestOrOp.j ? i : 0)];
+      solution.path.erase(solution.path.begin() + bestOrOp.i +
+                          (bestOrOp.i > bestOrOp.j ? i : 0));
+      solution.path.insert(solution.path.begin() + bestOrOp.j +
+                               (bestOrOp.i > bestOrOp.j ? i : n - 1),
+                           aux);
+    }
 
     solution.cost += bestOrOp.delta;
 
