@@ -2,11 +2,48 @@
 #include "./BuscaLocal.h"
 #include "./utils.h"
 #include "Data.h"
+#include <algorithm>
+#include <cmath>
+#include <cstddef>
+#include <cstdlib>
+#include <iterator>
 #include <vector>
 
 const double magnitude = 1;
 
-inline bool Pertubacao(Solution &solution, Data *data) { return true; }
+struct slice {
+  size_t index;
+  size_t size;
+};
+
+inline bool Pertubacao(Solution &solution, Data *data) {
+  struct slice sliceA;
+  struct slice sliceB;
+
+  sliceA.index = rand() % solution.path.size();
+
+  if (solution.path.size() < 30)
+    sliceA.size = 2;
+  else
+    sliceA.size = ceil(rand() % (solution.path.size() / 10 - 2)) + 2;
+
+  std::rotate(solution.path.begin(), solution.path.begin() + sliceA.index,
+              solution.path.end());
+
+  sliceB.index = rand() % (solution.path.size() - sliceA.size) + sliceA.size;
+
+  if (solution.path.size() < 30)
+    sliceB.size = 2;
+  else
+    sliceB.size =
+        ceil(rand() % ((solution.path.size() - sliceA.size) / 10 - 2)) + 2;
+
+  std::cout << sliceA.index << ' ' << sliceA.size << std::endl;
+  std::cout << sliceB.index << ' ' << sliceB.size << std::endl;
+  printPath(solution.path);
+
+  return true;
+}
 
 // LEGACY
 

@@ -251,13 +251,18 @@ inline bool bestImprovementOrOpt(Solution &solution, Data *data, int n) {
   double delta;
   OrOptInfo bestOrOp = (OrOptInfo){.i = 0, .j = 0, .delta = 0};
 
+  if (solution.path.size() <= n) {
+    return true;
+  }
+
   for (size_t i = 1; i < solution.path.size() - n; i++) {
     for (size_t j = 1; j < solution.path.size() - 1; j++) {
 
       if (j >= i - 1 && j < i + n)
         continue;
 
-      // std::cout << i << ' ' << j << std::endl;
+      // a -> [b -> c] -> d => a -> d
+      // e -> f => e -> [b -> c] -> d
 
       a = solution.path[i - 1];
       b = solution.path[i];
@@ -286,19 +291,18 @@ inline bool bestImprovementOrOpt(Solution &solution, Data *data, int n) {
   }
 
   if (bestOrOp.delta < 0) {
-    // if (bestOrOp.i > bestOrOp.j) {
-    //   bestOrOp.j++;
-    // }
-
-    std::cout << "Best switch " << bestOrOp.i << ' ' << bestOrOp.j << std::endl;
-
-    for (int i = 0; i < n; i++) {
-      aux = solution.path[bestOrOp.i + (bestOrOp.i > bestOrOp.j ? i : 0)];
-      solution.path.erase(solution.path.begin() + bestOrOp.i +
-                          (bestOrOp.i > bestOrOp.j ? i : 0));
-      solution.path.insert(solution.path.begin() + bestOrOp.j +
-                               (bestOrOp.i > bestOrOp.j ? i : n - 1),
-                           aux);
+    if (bestOrOp.i > bestOrOp.j) {
+      for (int i = 0; i < n; i++) {
+        aux = solution.path[bestOrOp.i + i];
+        solution.path.erase(solution.path.begin() + bestOrOp.i + i);
+        solution.path.insert(solution.path.begin() + bestOrOp.j + i + 1, aux);
+      }
+    } else {
+      for (int i = 0; i < n; i++) {
+        aux = solution.path[bestOrOp.i];
+        solution.path.erase(solution.path.begin() + bestOrOp.i);
+        solution.path.insert(solution.path.begin() + bestOrOp.j, aux);
+      }
     }
 
     solution.cost += bestOrOp.delta;
