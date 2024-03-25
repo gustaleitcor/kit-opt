@@ -8,7 +8,7 @@
 
 inline void BuscaLocal(Solution &solution, Data *data) {
 
-  vector<int> options = {1, 2, 3, 4, 5};
+  vector<int> options = {2, 3, 4, 5};
   bool improved = false;
 
   while (!options.empty()) {

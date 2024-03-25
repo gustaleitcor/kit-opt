@@ -16,21 +16,19 @@ struct slice {
   size_t size;
 };
 
-inline bool Pertubacao(Solution &solution, Data *data) {
+inline Solution Pertubacao(Solution solution, Data *data) {
   struct slice sliceA;
   struct slice sliceB;
-
-  sliceA.index = rand() % solution.path.size();
 
   if (solution.path.size() < 30)
     sliceA.size = 2;
   else
     sliceA.size = ceil(rand() % (solution.path.size() / 10 - 2)) + 2;
 
+  sliceA.index = rand() % (solution.path.size() - sliceA.size + 1);
+
   std::rotate(solution.path.begin(), solution.path.begin() + sliceA.index,
               solution.path.end());
-
-  sliceB.index = rand() % (solution.path.size() - sliceA.size) + sliceA.size;
 
   if (solution.path.size() < 30)
     sliceB.size = 2;
@@ -38,11 +36,20 @@ inline bool Pertubacao(Solution &solution, Data *data) {
     sliceB.size =
         ceil(rand() % ((solution.path.size() - sliceA.size) / 10 - 2)) + 2;
 
-  std::cout << sliceA.index << ' ' << sliceA.size << std::endl;
-  std::cout << sliceB.index << ' ' << sliceB.size << std::endl;
-  printPath(solution.path);
+  sliceB.index =
+      rand() % (solution.path.size() - sliceA.size - sliceB.size + 1) +
+      sliceA.size;
 
-  return true;
+  std::rotate(solution.path.begin(), solution.path.begin() + sliceB.index,
+              solution.path.begin() + sliceB.index + sliceB.size);
+
+  std::rotate(solution.path.begin() + sliceB.size,
+              solution.path.begin() + sliceB.size + sliceA.size,
+              solution.path.begin() + sliceB.index + sliceB.size);
+
+  solution.cost = calcCost(solution.path, data);
+
+  return solution;
 }
 
 // LEGACY
