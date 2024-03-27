@@ -1,14 +1,16 @@
 #pragma once
 
+#include "../Data.h"
+#include "../Solution.h"
+#include "./MoveSets.h"
 #include "./utils.h"
-#include "Data.h"
-#include "moves.h"
 #include <random>
 #include <vector>
 
+
 inline void BuscaLocal(Solution &solution, Data *data) {
 
-  vector<int> options = {2, 3, 4, 5};
+  vector<int> options = {1, 2, 3, 4, 5};
   bool improved = false;
 
   while (!options.empty()) {
@@ -33,6 +35,7 @@ inline void BuscaLocal(Solution &solution, Data *data) {
 
     if (improved) {
       options = {1, 2, 3, 4, 5};
+      improved = false;
     } else {
       options.erase(options.begin() + n);
     }

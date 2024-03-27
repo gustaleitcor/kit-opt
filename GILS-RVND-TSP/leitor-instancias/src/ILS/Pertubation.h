@@ -1,7 +1,8 @@
 #pragma once
-#include "./BuscaLocal.h"
+#include "../Data.h"
+#include "../Solution.h"
+#include "./LocalSearch.h"
 #include "./utils.h"
-#include "Data.h"
 #include <algorithm>
 #include <cmath>
 #include <cstddef>

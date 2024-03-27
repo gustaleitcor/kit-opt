@@ -1,4 +1,5 @@
 #pragma once
+#include "../Solution.h"
 #include "utils.h"
 #include <algorithm>
 #include <cstddef>

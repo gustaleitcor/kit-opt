@@ -1,7 +1,5 @@
-#include "./utils.h"
-#include "BuscaLocal.h"
+#include "./ILS/ILS.h"
 #include "Data.h"
-#include "ILS.h"
 #include <iostream>
 #include <numeric>
 #include <vector>
@@ -22,9 +20,11 @@ int main(int argc, char **argv) {
   std::iota(solution.path.begin(), solution.path.end(), 1);
   solution.cost = calcCost(solution.path, &data);
 
+  std::cout << "Custo inicial: " << solution.cost << std::endl;
+
   solution = ILS(solution, &data);
 
-  printPath(solution.path, false);
+  printPath(solution.path);
 
   std::cout << "Custo final = " << solution.cost << std::endl;
 

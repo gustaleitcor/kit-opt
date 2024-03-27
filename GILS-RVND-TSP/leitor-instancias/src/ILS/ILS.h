@@ -1,15 +1,15 @@
 #pragma once
-#include "BuscaLocal.h"
-#include "Construcao.h"
-#include "Data.h"
-#include "Pertubacao.h"
+#include "../Data.h"
+#include "Construction.h"
+#include "LocalSearch.h"
+#include "Pertubation.h"
 #include "utils.h"
 #include <climits>
 #include <cmath>
 #include <cstdlib>
 
-#define MAX_ITER 10
-#define MAX_ITER_ILS 50
+#define MAX_ITER 5
+#define MAX_ITER_ILS 1000
 
 inline Solution ILS(Solution &solution, Data *data) {
   Solution bestOfAll;
@@ -23,7 +23,6 @@ inline Solution ILS(Solution &solution, Data *data) {
     for (int iterIls = 0; iterIls < MAX_ITER_ILS; iterIls++) {
       BuscaLocal(solution, data);
       if (solution.cost < best.cost) {
-        std::cout << solution.cost << std::endl;
         best = solution;
         iterIls = 0;
       }
@@ -32,6 +31,8 @@ inline Solution ILS(Solution &solution, Data *data) {
     if (best.cost < bestOfAll.cost) {
       bestOfAll = best;
     }
+
+    std::cout << "Solução parcial: " << bestOfAll.cost << std::endl;
   }
 
   return bestOfAll;

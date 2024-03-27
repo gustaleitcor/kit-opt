@@ -1,6 +1,7 @@
 #pragma once
+#include "../Data.h"
+#include "../Solution.h"
 #include "./utils.h"
-#include "Data.h"
 #include <algorithm>
 #include <cmath>
 #include <cstddef>
@@ -75,6 +76,7 @@ inline void Construcao(Solution &solution, Data *data) {
   } else {
     solution.path.resize(data->getDimension());
     std::iota(solution.path.begin(), solution.path.end(), 1);
+    solution.cost = calcCost(solution.path, data);
   }
 }
 

@@ -1,14 +1,9 @@
 #pragma once
 
-#include "./Data.h"
+#include "../Data.h"
 
 #include <iostream>
 #include <vector>
-
-typedef struct Solution {
-  std::vector<int> path;
-  double cost;
-} Solution_t;
 
 inline double calcCost(const std::vector<int> &path, Data *data) {
 
