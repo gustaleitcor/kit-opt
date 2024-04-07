@@ -1,5 +1,7 @@
 #include "./ILS/ILS.h"
+#include "./Subsequence.h"
 #include "Data.h"
+#include "MLP/MLP.h"
 #include <iostream>
 #include <numeric>
 #include <vector>
@@ -15,18 +17,9 @@ int main(int argc, char **argv) {
   // std::cout << "DistanceMatrix: " << std::endl;
   // data.printMatrixDist();
 
-  Solution solution = (Solution){.path = vector<int>(n), .cost = 0};
+  MLP::MLP(&data);
 
-  std::iota(solution.path.begin(), solution.path.end(), 1);
-  solution.cost = calcCost(solution.path, &data);
-
-  std::cout << "Custo inicial: " << solution.cost << std::endl;
-
-  solution = ILS(solution, &data);
-
-  printPath(solution.path);
-
-  std::cout << "Custo final = " << solution.cost << std::endl;
+  // MLP(&data);
 
   return 0;
 }

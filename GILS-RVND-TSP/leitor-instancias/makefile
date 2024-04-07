@@ -20,7 +20,7 @@ OBJDIR = obj
 #############################
 
 #### lista de todos os srcs e todos os objs
-SRCS = $(wildcard $(SRCDIR)/*.cpp)
+SRCS = $(wildcard $(SRCDIR)/*.cpp) $(wildcard $(SRCDIR)/ILS/*.cpp) $(wildcard $(SRCDIR)/MLP/*.cpp)
 OBJS = $(patsubst $(SRCDIR)/%.cpp, $(OBJDIR)/%.o, $(SRCS))
 #############################
 
@@ -48,6 +48,8 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
 clean:
 	@echo "\033[31mcleaning obj directory \033[0m"
 	@rm tsp -f $(OBJDIR)/*.o $(OBJDIR)/*.d
+	@rm tsp -f $(OBJDIR)/ILS/*.o $(OBJDIR)/ILS/*.d
+	@rm tsp -f $(OBJDIR)/MLP/*.o $(OBJDIR)/MLP/*.d
 
 
 rebuild: clean tsp
