@@ -1,39 +1,22 @@
 #pragma once
 #include "../Data.h"
-#include "Construction.h"
-#include "LocalSearch.h"
-#include "Pertubation.h"
-#include "utils.h"
-#include <climits>
-#include <cmath>
-#include <cstdlib>
+#include "../Solution.h"
+#include "ILS.h"
 
-#define MAX_ITER 5
-#define MAX_ITER_ILS 1000
+namespace ILS {
 
-inline Solution ILS(Solution &solution, Data *data) {
-  Solution bestOfAll;
-  bestOfAll.cost = solution.cost;
-  Solution best;
+Solution ILS(Data *data);
 
-  for (int i = 0; i < MAX_ITER; i++) {
-    Construcao(solution, data);
-    best = solution;
+void Construcao(Solution &solution, Data *data);
 
-    for (int iterIls = 0; iterIls < MAX_ITER_ILS; iterIls++) {
-      BuscaLocal(solution, data);
-      if (solution.cost < best.cost) {
-        best = solution;
-        iterIls = 0;
-      }
-      solution = Pertubacao(best, data);
-    }
-    if (best.cost < bestOfAll.cost) {
-      bestOfAll = best;
-    }
+void BuscaLocal(Solution &solution, Data *data);
 
-    std::cout << "Solução parcial: " << bestOfAll.cost << std::endl;
-  }
+bool bestImprovementSwap(Solution &solution, Data *data);
 
-  return bestOfAll;
-}
+bool bestImprovement2Opt(Solution &solution, Data *data);
+
+bool bestImprovementOrOpt(Solution &solution, Data *data, int n);
+
+Solution Pertubacao(Solution solution, Data *data);
+
+}; // namespace ILS

@@ -1,14 +1,10 @@
-#pragma once
-
 #include "../Data.h"
 #include "../Solution.h"
-#include "./MoveSets.h"
-#include "./utils.h"
+#include "ILS.h"
 #include <random>
 #include <vector>
 
-
-inline void BuscaLocal(Solution &solution, Data *data) {
+void ILS::BuscaLocal(Solution &solution, Data *data) {
 
   vector<int> options = {1, 2, 3, 4, 5};
   bool improved = false;
@@ -17,19 +13,19 @@ inline void BuscaLocal(Solution &solution, Data *data) {
     int n = rand() % options.size();
     switch (options[n]) {
     case 1:
-      improved = bestImprovementSwap(solution, data);
+      improved = ILS::bestImprovementSwap(solution, data);
       break;
     case 2:
-      improved = bestImprovement2Opt(solution, data);
+      improved = ILS::bestImprovement2Opt(solution, data);
       break;
     case 3:
-      improved = bestImprovementOrOpt(solution, data, 1);
+      improved = ILS::bestImprovementOrOpt(solution, data, 1);
       break;
     case 4:
-      improved = bestImprovementOrOpt(solution, data, 2);
+      improved = ILS::bestImprovementOrOpt(solution, data, 2);
       break;
     case 5:
-      improved = bestImprovementOrOpt(solution, data, 3);
+      improved = ILS::bestImprovementOrOpt(solution, data, 3);
       break;
     }
 

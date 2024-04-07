@@ -1,6 +1,5 @@
-#pragma once
 #include "../Solution.h"
-#include "utils.h"
+#include "ILS.h"
 #include <algorithm>
 #include <cstddef>
 #include <vector>
@@ -10,7 +9,7 @@ typedef struct SwapInfo_t {
   double delta;
 } SwapInfo;
 
-inline bool bestImprovementSwap(Solution &solution, Data *data) {
+bool ILS::bestImprovementSwap(Solution &solution, Data *data) {
 
   double delta;
   double xy, yz;
@@ -183,7 +182,7 @@ inline bool bestImprovementSwap(Solution &solution, Data *data) {
   };
 
   if (bestSwap.delta < 0) {
-    swap(solution.path, bestSwap.i, bestSwap.j);
+    Solution::swap(solution.path, bestSwap.i, bestSwap.j);
     solution.cost += bestSwap.delta;
     return true;
   }
@@ -196,7 +195,7 @@ typedef struct Info2opt {
   double delta;
 } Info2opt_t;
 
-inline bool bestImprovement2Opt(Solution &solution, Data *data) {
+bool ILS::bestImprovement2Opt(Solution &solution, Data *data) {
 
   size_t a, b, c, d;
   double ab, cd, ac, bd;
@@ -246,7 +245,7 @@ typedef struct OrOptInfo {
   double delta;
 } OrOptInfo_t;
 
-inline bool bestImprovementOrOpt(Solution &solution, Data *data, int n) {
+bool ILS::bestImprovementOrOpt(Solution &solution, Data *data, int n) {
   size_t a, b, c, d, e, f, aux;
   double ab, cd, ad, eb, cf, ef;
   double delta;

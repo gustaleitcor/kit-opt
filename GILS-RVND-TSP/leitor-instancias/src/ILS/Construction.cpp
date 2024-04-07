@@ -1,7 +1,6 @@
-#pragma once
 #include "../Data.h"
 #include "../Solution.h"
-#include "./utils.h"
+#include "./ILS.h"
 #include <algorithm>
 #include <cmath>
 #include <cstddef>
@@ -18,7 +17,7 @@ typedef struct InsertionInfo_t {
   double cost;
 } InsertionInfo;
 
-inline void Construcao(Solution &solution, Data *data) {
+void ILS::Construcao(Solution &solution, Data *data) {
   vector<int> path;
 
   path.push_back(solution.path[0]);
@@ -26,7 +25,7 @@ inline void Construcao(Solution &solution, Data *data) {
 
   solution.path.erase(solution.path.begin());
 
-  double total_dist = calcCost(path, data);
+  double total_dist = Solution::calcCost(path, data);
 
   double cost;
   size_t ik;
@@ -76,7 +75,7 @@ inline void Construcao(Solution &solution, Data *data) {
   } else {
     solution.path.resize(data->getDimension());
     std::iota(solution.path.begin(), solution.path.end(), 1);
-    solution.cost = calcCost(solution.path, data);
+    solution.cost = Solution::calcCost(solution.path, data);
   }
 }
 

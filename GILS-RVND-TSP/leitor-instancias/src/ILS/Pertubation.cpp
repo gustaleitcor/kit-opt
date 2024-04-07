@@ -1,8 +1,6 @@
-#pragma once
 #include "../Data.h"
 #include "../Solution.h"
-#include "./LocalSearch.h"
-#include "./utils.h"
+#include "ILS.h"
 #include <algorithm>
 #include <cmath>
 #include <cstddef>
@@ -10,14 +8,12 @@
 #include <iterator>
 #include <vector>
 
-const double magnitude = 1;
-
 struct slice {
   size_t index;
   size_t size;
 };
 
-inline Solution Pertubacao(Solution solution, Data *data) {
+Solution ILS::Pertubacao(Solution solution, Data *data) {
   struct slice sliceA;
   struct slice sliceB;
 
@@ -48,7 +44,7 @@ inline Solution Pertubacao(Solution solution, Data *data) {
               solution.path.begin() + sliceB.size + sliceA.size,
               solution.path.begin() + sliceB.index + sliceB.size);
 
-  solution.cost = calcCost(solution.path, data);
+  solution.cost = Solution::calcCost(solution.path, data);
 
   return solution;
 }
