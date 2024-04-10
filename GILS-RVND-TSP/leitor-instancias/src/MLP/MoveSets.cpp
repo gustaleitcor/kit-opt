@@ -35,7 +35,7 @@ bool MLP::bestImprovementSwap(
   }
 
   if (bestSwap.delta < 0) {
-    Solution::swap(solution.path, bestSwap.i, bestSwap.j);
+    Solution::swap(solution.sequence, bestSwap.i, bestSwap.j);
     Subsequence::updateAllSubseq(solution, subseq_matrix, data);
     return true;
   }
@@ -72,8 +72,8 @@ bool MLP::bestImprovement2Opt(
     }
 
   if (best2opt.delta < 0) {
-    reverse(solution.path.begin() + best2opt.i,
-            solution.path.begin() + best2opt.j + 1);
+    reverse(solution.sequence.begin() + best2opt.i,
+            solution.sequence.begin() + best2opt.j + 1);
     Subsequence::updateAllSubseq(solution, subseq_matrix, data);
     return true;
   }
@@ -92,7 +92,7 @@ bool MLP::bestImprovementOrOpt(
 
   Subsequence subsequence;
   OrOptInfo bestOrOp = (OrOptInfo){.i = 0, .j = 0, .delta = 0};
-  size_t aux, size = solution.path.size();
+  size_t aux, size = solution.sequence.size();
   double delta = 0;
 
   for (size_t i = 1; i < size - n; i++) {
@@ -136,15 +136,16 @@ bool MLP::bestImprovementOrOpt(
   if (bestOrOp.delta < 0) {
     if (bestOrOp.i > bestOrOp.j) {
       for (int i = 0; i < n; i++) {
-        aux = solution.path[bestOrOp.i + i];
-        solution.path.erase(solution.path.begin() + bestOrOp.i + i);
-        solution.path.insert(solution.path.begin() + bestOrOp.j + i + 1, aux);
+        aux = solution.sequence[bestOrOp.i + i];
+        solution.sequence.erase(solution.sequence.begin() + bestOrOp.i + i);
+        solution.sequence.insert(solution.sequence.begin() + bestOrOp.j + i + 1,
+                                 aux);
       }
     } else {
       for (int i = 0; i < n; i++) {
-        aux = solution.path[bestOrOp.i];
-        solution.path.erase(solution.path.begin() + bestOrOp.i);
-        solution.path.insert(solution.path.begin() + bestOrOp.j, aux);
+        aux = solution.sequence[bestOrOp.i];
+        solution.sequence.erase(solution.sequence.begin() + bestOrOp.i);
+        solution.sequence.insert(solution.sequence.begin() + bestOrOp.j, aux);
       }
     }
 

@@ -8,26 +8,29 @@ void MLP::Construcao(Solution &solution, Data *data) {
   size_t selection;
   double alpha;
 
-  s.path.push_back(solution.path[0]);
+  s.sequence.push_back(solution.sequence[0]);
 
-  size_t node = solution.path[0];
+  size_t node = solution.sequence[0];
 
-  solution.path.erase(solution.path.begin());
+  solution.sequence.erase(solution.sequence.begin());
+  solution.sequence.pop_back();
 
-  while (!solution.path.empty()) {
-    std::sort(solution.path.begin(), solution.path.end(),
+  while (!solution.sequence.empty()) {
+    std::sort(solution.sequence.begin(), solution.sequence.end(),
               [node, data](const int &a, const int &b) {
                 return data->getDistance(a, node) < data->getDistance(b, node);
               });
 
     alpha = (double)rand() / RAND_MAX;
-    selection = rand() % ((size_t)ceil(alpha * solution.path.size()));
+    selection = rand() % ((size_t)ceil(alpha * solution.sequence.size()));
 
-    node = solution.path[selection];
-    s.path.push_back(node);
+    node = solution.sequence[selection];
+    s.sequence.push_back(node);
 
-    solution.path.erase(solution.path.begin() + selection);
+    solution.sequence.erase(solution.sequence.begin() + selection);
   }
+
+  s.sequence.push_back(s.sequence[0]);
 
   solution = s;
 }

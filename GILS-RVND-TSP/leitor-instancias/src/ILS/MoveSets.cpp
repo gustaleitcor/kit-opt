@@ -24,57 +24,57 @@ bool ILS::bestImprovementSwap(Solution &solution, Data *data) {
   size_t x, y, z, a, b, c, d;
   SwapInfo bestSwap = (SwapInfo){.i = 0, .j = 0, .delta = 0};
 
-  // SWAP do primeiro elemento
+  // // SWAP do primeiro elemento
 
-  // a -> b -> c => a -> y -> c
-  // x -> y -> z => x -> b -> z
+  // // a -> b -> c => a -> y -> c
+  // // x -> y -> z => x -> b -> z
 
-  a = solution.path[solution.path.size() - 1];
-  b = solution.path[0];
-  c = solution.path[1];
+  // a = solution.sequence[solution.sequence.size() - 1];
+  // b = solution.sequence[0];
+  // c = solution.sequence[1];
 
-  for (size_t i = 2; i < solution.path.size() - 1; i++) {
-    x = solution.path[i - 1];
-    y = solution.path[i];
-    z = solution.path[i + 1];
+  // for (size_t i = 2; i < solution.sequence.size() - 1; i++) {
+  //   x = solution.sequence[i - 1];
+  //   y = solution.sequence[i];
+  //   z = solution.sequence[i + 1];
 
-    ab = data->getDistance(a, b);
-    bc = data->getDistance(b, c);
-    yc = data->getDistance(y, c);
-    ay = data->getDistance(a, y);
+  //   ab = data->getDistance(a, b);
+  //   bc = data->getDistance(b, c);
+  //   yc = data->getDistance(y, c);
+  //   ay = data->getDistance(a, y);
 
-    xy = data->getDistance(x, y);
-    yz = data->getDistance(y, z);
-    xb = data->getDistance(x, b);
-    bz = data->getDistance(b, z);
+  //   xy = data->getDistance(x, y);
+  //   yz = data->getDistance(y, z);
+  //   xb = data->getDistance(x, b);
+  //   bz = data->getDistance(b, z);
 
-    delta = ay + yc + xb + bz - (ab + bc + xy + yz);
+  //   delta = ay + yc + xb + bz - (ab + bc + xy + yz);
 
-    if (delta < bestSwap.delta) {
-      bestSwap.delta = delta;
-      bestSwap.i = 0;
-      bestSwap.j = i;
-    };
-  }
+  //   if (delta < bestSwap.delta) {
+  //     bestSwap.delta = delta;
+  //     bestSwap.i = 0;
+  //     bestSwap.j = i;
+  //   };
+  // }
 
   // SWAP de não vizinhos
 
   // x -> y -> z => x -> b -> z
   // a -> b -> c => a -> y -> c
 
-  for (size_t i = 1; i < solution.path.size() - 1; i++) {
+  for (size_t i = 1; i < solution.sequence.size() - 1; i++) {
 
-    x = solution.path[i - 1];
-    y = solution.path[i];
-    z = solution.path[i + 1];
+    x = solution.sequence[i - 1];
+    y = solution.sequence[i];
+    z = solution.sequence[i + 1];
 
     xy = data->getDistance(x, y);
     yz = data->getDistance(y, z);
 
-    for (size_t j = i + 2; j < solution.path.size() - 1; j++) {
-      a = solution.path[j - 1];
-      b = solution.path[j];
-      c = solution.path[j + 1];
+    for (size_t j = i + 2; j < solution.sequence.size() - 1; j++) {
+      a = solution.sequence[j - 1];
+      b = solution.sequence[j];
+      c = solution.sequence[j + 1];
 
       ab = data->getDistance(a, b);
       bc = data->getDistance(b, c);
@@ -99,12 +99,12 @@ bool ILS::bestImprovementSwap(Solution &solution, Data *data) {
 
   // a -> b -> c -> d => a -> c -> b -> d
 
-  for (size_t i = 1; i < solution.path.size() - 2; i++) {
+  for (size_t i = 1; i < solution.sequence.size() - 2; i++) {
 
-    a = solution.path[i - 1];
-    b = solution.path[i];
-    c = solution.path[i + 1];
-    d = solution.path[i + 2];
+    a = solution.sequence[i - 1];
+    b = solution.sequence[i];
+    c = solution.sequence[i + 1];
+    d = solution.sequence[i + 2];
 
     ab = data->getDistance(a, b);
     bc = data->getDistance(b, c);
@@ -123,66 +123,66 @@ bool ILS::bestImprovementSwap(Solution &solution, Data *data) {
     };
   }
 
-  // SWAP do ultimo elemento
+  // // SWAP do ultimo elemento
 
-  // a -> b -> c => a -> y -> c
-  // x -> y -> z => x -> b -> z
+  // // a -> b -> c => a -> y -> c
+  // // x -> y -> z => x -> b -> z
 
-  a = solution.path[solution.path.size() - 2];
-  b = solution.path[solution.path.size() - 1];
-  c = solution.path[0];
+  // a = solution.sequence[solution.sequence.size() - 2];
+  // b = solution.sequence[solution.sequence.size() - 1];
+  // c = solution.sequence[0];
 
-  for (size_t i = 1; i < solution.path.size() - 2; i++) {
-    x = solution.path[i - 1];
-    y = solution.path[i];
-    z = solution.path[i + 1];
+  // for (size_t i = 1; i < solution.sequence.size() - 2; i++) {
+  //   x = solution.sequence[i - 1];
+  //   y = solution.sequence[i];
+  //   z = solution.sequence[i + 1];
 
-    ab = data->getDistance(a, b);
-    bc = data->getDistance(b, c);
-    ay = data->getDistance(a, y);
-    yc = data->getDistance(y, c);
+  //   ab = data->getDistance(a, b);
+  //   bc = data->getDistance(b, c);
+  //   ay = data->getDistance(a, y);
+  //   yc = data->getDistance(y, c);
 
-    xy = data->getDistance(x, y);
-    yz = data->getDistance(y, z);
-    xb = data->getDistance(x, b);
-    bz = data->getDistance(b, z);
+  //   xy = data->getDistance(x, y);
+  //   yz = data->getDistance(y, z);
+  //   xb = data->getDistance(x, b);
+  //   bz = data->getDistance(b, z);
 
-    delta = ay + xb + bz + yc - (ab + bc + xy + yz);
+  //   delta = ay + xb + bz + yc - (ab + bc + xy + yz);
 
-    if (delta < bestSwap.delta) {
-      bestSwap.delta = delta;
-      bestSwap.i = i;
-      bestSwap.j = solution.path.size() - 1;
-    };
-  }
+  //   if (delta < bestSwap.delta) {
+  //     bestSwap.delta = delta;
+  //     bestSwap.i = i;
+  //     bestSwap.j = solution.sequence.size() - 1;
+  //   };
+  // }
 
-  // SWAP do primeiro com o ultimo
+  // // SWAP do primeiro com o ultimo
 
-  // a -> b -> c -> d => a -> c -> b -> d
+  // // a -> b -> c -> d => a -> c -> b -> d
 
-  a = solution.path[solution.path.size() - 2];
-  b = solution.path[solution.path.size() - 1];
-  c = solution.path[0];
-  d = solution.path[1];
+  // a = solution.sequence[solution.sequence.size() - 2];
+  // b = solution.sequence[solution.sequence.size() - 1];
+  // c = solution.sequence[0];
+  // d = solution.sequence[1];
 
-  ab = data->getDistance(a, b);
-  bc = data->getDistance(b, c);
-  cd = data->getDistance(c, d);
+  // ab = data->getDistance(a, b);
+  // bc = data->getDistance(b, c);
+  // cd = data->getDistance(c, d);
 
-  ac = data->getDistance(a, c);
-  cb = data->getDistance(c, b);
-  bd = data->getDistance(b, d);
+  // ac = data->getDistance(a, c);
+  // cb = data->getDistance(c, b);
+  // bd = data->getDistance(b, d);
 
-  delta = ac + cb + bd - (ab + bc + cd);
+  // delta = ac + cb + bd - (ab + bc + cd);
 
-  if (delta < bestSwap.delta) {
-    bestSwap.delta = delta;
-    bestSwap.i = 0;
-    bestSwap.j = solution.path.size() - 1;
-  };
+  // if (delta < bestSwap.delta) {
+  //   bestSwap.delta = delta;
+  //   bestSwap.i = 0;
+  //   bestSwap.j = solution.sequence.size() - 1;
+  // };
 
   if (bestSwap.delta < 0) {
-    Solution::swap(solution.path, bestSwap.i, bestSwap.j);
+    Solution::swap(solution.sequence, bestSwap.i, bestSwap.j);
     solution.cost += bestSwap.delta;
     return true;
   }
@@ -207,12 +207,12 @@ bool ILS::bestImprovement2Opt(Solution &solution, Data *data) {
       .delta = 0,
   };
 
-  for (size_t i = 0; i < solution.path.size(); i++) {
-    for (size_t j = i + 2; j < solution.path.size() - 1; j++) {
-      a = solution.path[i];
-      b = solution.path[i + 1];
-      c = solution.path[j];
-      d = solution.path[j + 1];
+  for (size_t i = 0; i < solution.sequence.size(); i++) {
+    for (size_t j = i + 2; j < solution.sequence.size() - 1; j++) {
+      a = solution.sequence[i];
+      b = solution.sequence[i + 1];
+      c = solution.sequence[j];
+      d = solution.sequence[j + 1];
 
       ab = data->getDistance(a, b);
       cd = data->getDistance(c, d);
@@ -232,8 +232,8 @@ bool ILS::bestImprovement2Opt(Solution &solution, Data *data) {
 
   if (best2opt.delta < 0) {
     solution.cost += best2opt.delta;
-    reverse(solution.path.begin() + best2opt.i,
-            solution.path.begin() + best2opt.j);
+    reverse(solution.sequence.begin() + best2opt.i,
+            solution.sequence.begin() + best2opt.j);
     return true;
   }
 
@@ -251,12 +251,12 @@ bool ILS::bestImprovementOrOpt(Solution &solution, Data *data, int n) {
   double delta;
   OrOptInfo bestOrOp = (OrOptInfo){.i = 0, .j = 0, .delta = 0};
 
-  if (solution.path.size() <= n) {
+  if (solution.sequence.size() <= n) {
     return true;
   }
 
-  for (size_t i = 1; i < solution.path.size() - n; i++) {
-    for (size_t j = 1; j < solution.path.size() - 1; j++) {
+  for (size_t i = 1; i < solution.sequence.size() - n; i++) {
+    for (size_t j = 1; j < solution.sequence.size() - 1; j++) {
 
       if (j >= i - 1 && j < i + n)
         continue;
@@ -264,13 +264,13 @@ bool ILS::bestImprovementOrOpt(Solution &solution, Data *data, int n) {
       // a -> [b -> c] -> d => a -> d
       // e -> f => e -> [b -> c] -> d
 
-      a = solution.path[i - 1];
-      b = solution.path[i];
-      c = solution.path[i + n - 1];
-      d = solution.path[i + n];
+      a = solution.sequence[i - 1];
+      b = solution.sequence[i];
+      c = solution.sequence[i + n - 1];
+      d = solution.sequence[i + n];
 
-      e = solution.path[j];
-      f = solution.path[j + 1];
+      e = solution.sequence[j];
+      f = solution.sequence[j + 1];
 
       ab = data->getDistance(a, b);
       cd = data->getDistance(c, d);
@@ -293,15 +293,16 @@ bool ILS::bestImprovementOrOpt(Solution &solution, Data *data, int n) {
   if (bestOrOp.delta < 0) {
     if (bestOrOp.i > bestOrOp.j) {
       for (int i = 0; i < n; i++) {
-        aux = solution.path[bestOrOp.i + i];
-        solution.path.erase(solution.path.begin() + bestOrOp.i + i);
-        solution.path.insert(solution.path.begin() + bestOrOp.j + i + 1, aux);
+        aux = solution.sequence[bestOrOp.i + i];
+        solution.sequence.erase(solution.sequence.begin() + bestOrOp.i + i);
+        solution.sequence.insert(solution.sequence.begin() + bestOrOp.j + i + 1,
+                                 aux);
       }
     } else {
       for (int i = 0; i < n; i++) {
-        aux = solution.path[bestOrOp.i];
-        solution.path.erase(solution.path.begin() + bestOrOp.i);
-        solution.path.insert(solution.path.begin() + bestOrOp.j, aux);
+        aux = solution.sequence[bestOrOp.i];
+        solution.sequence.erase(solution.sequence.begin() + bestOrOp.i);
+        solution.sequence.insert(solution.sequence.begin() + bestOrOp.j, aux);
       }
     }
 

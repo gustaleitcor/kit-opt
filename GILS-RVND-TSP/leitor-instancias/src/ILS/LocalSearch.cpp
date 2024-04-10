@@ -1,7 +1,6 @@
 #include "../Data.h"
 #include "../Solution.h"
 #include "ILS.h"
-#include <random>
 #include <vector>
 
 void ILS::BuscaLocal(Solution &solution, Data *data) {

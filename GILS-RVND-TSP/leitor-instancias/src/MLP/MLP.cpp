@@ -1,4 +1,5 @@
 #include "MLP.h"
+#include "../ILS/ILS.h"
 #include "../Subsequence.h"
 #include <cstddef>
 #include <cstdlib>
@@ -8,20 +9,24 @@
 #define MAX_ITER 5
 #define MAX_ITER_ILS 10
 
-Solution MLP::MLP(Data *data) {
+Solution MLP::MLP(Data *data, bool quiet) {
   size_t n = data->getDimension();
+
   std::vector<std::vector<Subsequence>> subseq_matrix(
-      n, std::vector<Subsequence>(n));
+      n + 1, std::vector<Subsequence>(n + 1));
+
   Solution solution(n);
   Solution bestOfAll;
   Solution best;
 
   Subsequence::updateAllSubseq(solution, subseq_matrix, data);
 
-  bestOfAll.cost = solution.cost;
+  solution.printSolution();
 
-  std::cout << "Custo acumulado inicial: " << subseq_matrix[0][n - 1].C
-            << std::endl;
+  bestOfAll.cost = solution.cost;
+  if (!quiet)
+    std::cout << "Custo acumulado inicial: " << subseq_matrix[0][n - 1].C
+              << std::endl;
 
   for (int i = 0; i < MAX_ITER; i++) {
     MLP::Construcao(solution, data);
@@ -35,18 +40,24 @@ Solution MLP::MLP(Data *data) {
         best = solution;
         iterIls = 0;
       }
-      solution = MLP::Pertubacao(best, data, subseq_matrix);
+      solution = MLP::Pertubacao(best, data);
       Subsequence::updateAllSubseq(solution, subseq_matrix, data);
     }
     if (best.cost < bestOfAll.cost) {
       bestOfAll = best;
     }
 
-    std::cout << "Solução acumulada parcial: " << bestOfAll.cost << std::endl;
+    if (!quiet)
+      std::cout << "Solução acumulada parcial: " << bestOfAll.cost << std::endl;
   }
 
-  bestOfAll.printPath(false);
-
+  if (!quiet) {
+    bestOfAll.printSolution();
+    Subsequence::updateAllSubseq(solution, subseq_matrix, data);
+    std::cout << "Custo acumulado final = " << bestOfAll.cost << std::endl;
+    std::cout << "Custo final = "
+              << Solution::calcCost(bestOfAll.sequence, data) << std::endl;
+  }
   std::cout << "Custo acumulado final = " << bestOfAll.cost << std::endl;
 
   return bestOfAll;

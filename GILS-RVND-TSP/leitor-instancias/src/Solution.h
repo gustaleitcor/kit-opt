@@ -5,7 +5,7 @@
 
 class Solution {
 public:
-  std::vector<int> path;
+  std::vector<int> sequence;
   double cost;
 
   Solution();
@@ -14,7 +14,7 @@ public:
 
   void updateCost(Data *data);
   static double calcCost(const std::vector<int> &v, Data *data);
-  void printPath(bool hamilton = true);
-  static void printPath(std::vector<int> v, bool hamilton = true);
+  void printSolution();
+  static void printSolution(std::vector<int> v);
   static void swap(std::vector<int> &v, int i, int j);
 };

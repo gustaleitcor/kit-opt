@@ -4,7 +4,7 @@
 #include "../Subsequence.h"
 
 namespace MLP {
-Solution MLP(Data *data);
+Solution MLP(Data *data, bool quiet);
 
 void Construcao(Solution &solution, Data *data);
 
@@ -21,6 +21,5 @@ bool bestImprovementOrOpt(Solution &solution, Data *data,
                           std::vector<std::vector<Subsequence>> &subseq_matrix,
                           int n);
 
-Solution Pertubacao(Solution solution, Data *data,
-                    std::vector<std::vector<Subsequence>> &subseq_matrix);
+Solution Pertubacao(Solution solution, Data *data);
 } // namespace MLP

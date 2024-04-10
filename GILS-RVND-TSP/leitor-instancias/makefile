@@ -44,6 +44,13 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
 	@sed -e 's|.*:|$(basename $@).o:|' < $(basename $@).d.tmp > $(basename $@).d
 	@rm -f $(basename $@).d.tmp
 
+benchmark: tsp instances
+	-@for instance in instances/*; do \
+		echo "Running benchmark on $${instance}"; \
+		./tsp $${instance} -b; \
+	done
+
+
 #delete objetos e arquivos de dependencia
 clean:
 	@echo "\033[31mcleaning obj directory \033[0m"

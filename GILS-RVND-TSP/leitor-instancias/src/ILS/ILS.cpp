@@ -1,9 +1,5 @@
 #include "./ILS.h"
 #include "../Data.h"
-#include <climits>
-#include <cmath>
-#include <cstddef>
-#include <cstdlib>
 
 #define MAX_ITER 5
 #define MAX_ITER_ILS 1000
@@ -18,6 +14,7 @@ Solution ILS::ILS(Data *data) {
 
   for (int i = 0; i < MAX_ITER; i++) {
     ILS::Construcao(solution, data);
+
     best = solution;
 
     for (int iterIls = 0; iterIls < MAX_ITER_ILS; iterIls++) {
@@ -26,6 +23,7 @@ Solution ILS::ILS(Data *data) {
         best = solution;
         iterIls = 0;
       }
+
       solution = ILS::Pertubacao(best, data);
     }
     if (best.cost < bestOfAll.cost) {
@@ -35,7 +33,7 @@ Solution ILS::ILS(Data *data) {
     std::cout << "Solução parcial: " << bestOfAll.cost << std::endl;
   }
 
-  bestOfAll.printPath();
+  bestOfAll.printSolution();
 
   std::cout << "Custo final = " << bestOfAll.cost << std::endl;
 

@@ -5,11 +5,8 @@
 #include <cmath>
 #include <cstddef>
 #include <cstdlib>
-#include <iostream>
-#include <numeric>
 #include <vector>
 
-#include <iostream>
 using namespace std;
 
 typedef struct InsertionInfo_t {
@@ -20,28 +17,31 @@ typedef struct InsertionInfo_t {
 void ILS::Construcao(Solution &solution, Data *data) {
   vector<int> path;
 
-  path.push_back(solution.path[0]);
-  path.push_back(solution.path[0]);
+  path.push_back(solution.sequence[0]);
+  path.push_back(solution.sequence[0]);
 
-  solution.path.erase(solution.path.begin());
+  solution.sequence.erase(solution.sequence.begin());
+  solution.sequence.pop_back();
 
   double total_dist = Solution::calcCost(path, data);
-
+  double alpha;
   double cost;
+  size_t selection;
+
   size_t ik;
   size_t kj;
   size_t ij;
 
   std::vector<InsertionInfo> vcost;
 
-  while (!solution.path.empty()) {
+  while (!solution.sequence.empty()) {
     for (size_t i = 0; i < path.size() - 1; i++) {
       // i = i
       // j = i + 1
       // k = k
-      for (size_t k = 0; k < solution.path.size(); k++) {
-        ik = data->getDistance(path[i], solution.path[k]);
-        kj = data->getDistance(solution.path[k], path[i + 1]);
+      for (size_t k = 0; k < solution.sequence.size(); k++) {
+        ik = data->getDistance(path[i], solution.sequence[k]);
+        kj = data->getDistance(solution.sequence[k], path[i + 1]);
         ij = data->getDistance(path[i], path[i + 1]);
         cost = ik + kj - ij;
 
@@ -56,26 +56,22 @@ void ILS::Construcao(Solution &solution, Data *data) {
               });
 
     // bias towards begin
-    double alpha = (double)rand() / RAND_MAX;
-    size_t selection = rand() % ((size_t)ceil(alpha * vcost.size()));
+    alpha = (double)rand() / RAND_MAX;
+    selection = rand() % ((size_t)ceil(alpha * vcost.size()));
 
     total_dist += vcost[selection].cost;
     path.insert(path.begin() + vcost[selection].j,
-                solution.path[vcost[selection].k]);
-    solution.path.erase(solution.path.begin() + vcost[selection].k);
+                solution.sequence[vcost[selection].k]);
+    solution.sequence.erase(solution.sequence.begin() + vcost[selection].k);
 
     vcost.clear();
   }
 
-  path.pop_back();
-
   if (total_dist < solution.cost) {
-    solution.path = path;
+    solution.sequence = path;
     solution.cost = total_dist;
   } else {
-    solution.path.resize(data->getDimension());
-    std::iota(solution.path.begin(), solution.path.end(), 1);
-    solution.cost = Solution::calcCost(solution.path, data);
+    solution = Solution(data->getDimension(), data);
   }
 }
 
@@ -94,11 +90,11 @@ void ILS::Construcao(Solution &solution, Data *data) {
 // return;
 
 // MinorCost minorCost;
-// while (!solution.path.empty()) {
+// while (!solution.sequence.empty()) {
 //   for (int i = 0; i < path.size() - 1; i++) {
-//     for (int j = 0; j < solution.path.size(); j++) {
-//       ik = data->getDistance(path[i], solution.path[j]);
-//       kj = data->getDistance(solution.path[j], path[i + 1]);
+//     for (int j = 0; j < solution.sequence.size(); j++) {
+//       ik = data->getDistance(path[i], solution.sequence[j]);
+//       kj = data->getDistance(solution.sequence[j], path[i + 1]);
 //       ij = data->getDistance(path[i], path[i + 1]);
 //       cost = ik + kj - ij;
 
@@ -118,10 +114,10 @@ void ILS::Construcao(Solution &solution, Data *data) {
 //   minorCost.isUpdated = false;
 
 //   tDist += minorCost.cost;
-//   path.insert(path.begin() + minorCost.j, solution.path[minorCost.k]);
-//   solution.path.erase(solution.path.begin() + minorCost.k);
+//   path.insert(path.begin() + minorCost.j, solution.sequence[minorCost.k]);
+//   solution.sequence.erase(solution.sequence.begin() + minorCost.k);
 // }
 
 // path.pop_back();
 
-// solution.path = path;
+// solution.sequence = path;
