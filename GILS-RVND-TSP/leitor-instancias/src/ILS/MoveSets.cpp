@@ -2,6 +2,7 @@
 #include "ILS.h"
 #include <algorithm>
 #include <cstddef>
+#include <exception>
 #include <vector>
 
 typedef struct SwapInfo_t {
@@ -23,39 +24,6 @@ bool ILS::bestImprovementSwap(Solution &solution, Data *data) {
 
   size_t x, y, z, a, b, c, d;
   SwapInfo bestSwap = (SwapInfo){.i = 0, .j = 0, .delta = 0};
-
-  // // SWAP do primeiro elemento
-
-  // // a -> b -> c => a -> y -> c
-  // // x -> y -> z => x -> b -> z
-
-  // a = solution.sequence[solution.sequence.size() - 1];
-  // b = solution.sequence[0];
-  // c = solution.sequence[1];
-
-  // for (size_t i = 2; i < solution.sequence.size() - 1; i++) {
-  //   x = solution.sequence[i - 1];
-  //   y = solution.sequence[i];
-  //   z = solution.sequence[i + 1];
-
-  //   ab = data->getDistance(a, b);
-  //   bc = data->getDistance(b, c);
-  //   yc = data->getDistance(y, c);
-  //   ay = data->getDistance(a, y);
-
-  //   xy = data->getDistance(x, y);
-  //   yz = data->getDistance(y, z);
-  //   xb = data->getDistance(x, b);
-  //   bz = data->getDistance(b, z);
-
-  //   delta = ay + yc + xb + bz - (ab + bc + xy + yz);
-
-  //   if (delta < bestSwap.delta) {
-  //     bestSwap.delta = delta;
-  //     bestSwap.i = 0;
-  //     bestSwap.j = i;
-  //   };
-  // }
 
   // SWAP de não vizinhos
 
@@ -123,67 +91,11 @@ bool ILS::bestImprovementSwap(Solution &solution, Data *data) {
     };
   }
 
-  // // SWAP do ultimo elemento
-
-  // // a -> b -> c => a -> y -> c
-  // // x -> y -> z => x -> b -> z
-
-  // a = solution.sequence[solution.sequence.size() - 2];
-  // b = solution.sequence[solution.sequence.size() - 1];
-  // c = solution.sequence[0];
-
-  // for (size_t i = 1; i < solution.sequence.size() - 2; i++) {
-  //   x = solution.sequence[i - 1];
-  //   y = solution.sequence[i];
-  //   z = solution.sequence[i + 1];
-
-  //   ab = data->getDistance(a, b);
-  //   bc = data->getDistance(b, c);
-  //   ay = data->getDistance(a, y);
-  //   yc = data->getDistance(y, c);
-
-  //   xy = data->getDistance(x, y);
-  //   yz = data->getDistance(y, z);
-  //   xb = data->getDistance(x, b);
-  //   bz = data->getDistance(b, z);
-
-  //   delta = ay + xb + bz + yc - (ab + bc + xy + yz);
-
-  //   if (delta < bestSwap.delta) {
-  //     bestSwap.delta = delta;
-  //     bestSwap.i = i;
-  //     bestSwap.j = solution.sequence.size() - 1;
-  //   };
-  // }
-
-  // // SWAP do primeiro com o ultimo
-
-  // // a -> b -> c -> d => a -> c -> b -> d
-
-  // a = solution.sequence[solution.sequence.size() - 2];
-  // b = solution.sequence[solution.sequence.size() - 1];
-  // c = solution.sequence[0];
-  // d = solution.sequence[1];
-
-  // ab = data->getDistance(a, b);
-  // bc = data->getDistance(b, c);
-  // cd = data->getDistance(c, d);
-
-  // ac = data->getDistance(a, c);
-  // cb = data->getDistance(c, b);
-  // bd = data->getDistance(b, d);
-
-  // delta = ac + cb + bd - (ab + bc + cd);
-
-  // if (delta < bestSwap.delta) {
-  //   bestSwap.delta = delta;
-  //   bestSwap.i = 0;
-  //   bestSwap.j = solution.sequence.size() - 1;
-  // };
-
   if (bestSwap.delta < 0) {
     Solution::swap(solution.sequence, bestSwap.i, bestSwap.j);
+
     solution.cost += bestSwap.delta;
+
     return true;
   }
 
@@ -231,7 +143,9 @@ bool ILS::bestImprovement2Opt(Solution &solution, Data *data) {
   }
 
   if (best2opt.delta < 0) {
+
     solution.cost += best2opt.delta;
+
     reverse(solution.sequence.begin() + best2opt.i,
             solution.sequence.begin() + best2opt.j);
     return true;

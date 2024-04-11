@@ -24,7 +24,7 @@ int main(int argc, char **argv) {
   // std::cout << "DistanceMatrix: " << std::endl;
   // data.printMatrixDist();
 
-  MLP::MLP(&data, quiet);
+  ILS::ILS(&data);
 
   // MLP(&data);
 
