@@ -6,8 +6,8 @@
 #include <iomanip>
 #include <vector>
 
-#define MAX_ITER 5
-#define MAX_ITER_ILS 10
+#define MAX_ITER 10
+#define MAX_ITER_ILS 100
 
 Solution MLP::MLP(Data *data, bool quiet) {
   size_t n = data->getDimension();
