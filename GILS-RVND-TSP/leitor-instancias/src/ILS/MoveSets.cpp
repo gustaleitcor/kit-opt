@@ -55,6 +55,8 @@ bool ILS::bestImprovementSwap(Solution &solution, Data *data) {
 
       delta = xb + bz + ay + yc - (xy + yz + ab + bc);
 
+      //std::cout << "i: " << i << " | j: " << j << " | delta: " << delta << std::endl;
+
       if (delta < bestSwap.delta) {
         bestSwap.delta = delta;
         bestSwap.i = i;
@@ -84,6 +86,8 @@ bool ILS::bestImprovementSwap(Solution &solution, Data *data) {
 
     delta = ac + cb + bd - (ab + bc + cd);
 
+    //std::cout << "i: " << i << " | j: " << i+1 << " | delta: " << delta << std::endl;
+
     if (delta < bestSwap.delta) {
       bestSwap.delta = delta;
       bestSwap.i = i;
@@ -93,9 +97,7 @@ bool ILS::bestImprovementSwap(Solution &solution, Data *data) {
 
   if (bestSwap.delta < 0) {
     Solution::swap(solution.sequence, bestSwap.i, bestSwap.j);
-
     solution.cost += bestSwap.delta;
-
     return true;
   }
 

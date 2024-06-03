@@ -35,8 +35,7 @@ void Solution::updateCost(Data *data) {
     return;
   }
 
-  for (int i = 0; i < this->sequence.size() - 1; i++)
-    this->cost += data->getDistance(this->sequence[i], this->sequence[i + 1]);
+  this->cost = Solution::calcCost(this->sequence, data);
 }
 
 double Solution::calcCost(const std::vector<int> &path, Data *data) {
@@ -45,9 +44,8 @@ double Solution::calcCost(const std::vector<int> &path, Data *data) {
     return 0;
 
   double cost = 0;
-  for (int i = 0; i < path.size() - 1; i++)
+  for (int i = 0; i < (path.size() - 1); i++)
     cost += data->getDistance(path[i], path[i + 1]);
-
   return cost;
 }
 

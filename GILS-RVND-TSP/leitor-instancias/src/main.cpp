@@ -1,10 +1,7 @@
-#include "./ILS/ILS.h"
-#include "./Subsequence.h"
 #include "Data.h"
+#include "ILS/ILS.h"
 #include "MLP/MLP.h"
 #include <iostream>
-#include <numeric>
-#include <vector>
 
 int main(int argc, char **argv) {
 
@@ -24,7 +21,7 @@ int main(int argc, char **argv) {
   // std::cout << "DistanceMatrix: " << std::endl;
   // data.printMatrixDist();
 
-  ILS::ILS(&data);
+  MLP::MLP(&data, true);
 
   // MLP(&data);
 
