@@ -1,4 +1,5 @@
 #include "Subsequence.h"
+#include <exception>
 
 Subsequence Subsequence::concatenate(Subsequence &sigma_1, Subsequence &sigma_2,
                                      Data *data) {
