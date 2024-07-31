@@ -28,13 +28,16 @@ Solution MLP::MLP(Data *data, bool quiet) {
     std::cout << "Custo acumulado inicial: " << subseq_matrix[0][n - 1].C
               << std::endl;
 
-  for (int i = 0; i < MAX_ITER; i++) {
+  for (int counterIls = 0; counterIls < MAX_ITER; counterIls++) {
     MLP::Construcao(solution, data);
     Subsequence::updateAllSubseq(solution, subseq_matrix, data);
     best = solution;
 
+    //std::cout << "counterIls: " << counterIls << std::endl;
+
     for (int iterIls = 0; iterIls < MAX_ITER_ILS; iterIls++) {
       MLP::BuscaLocal(solution, data, subseq_matrix);
+      //std::cout << "iterIls: " << iterIls << std::endl;
 
       if (solution.cost < best.cost) {
         best = solution;

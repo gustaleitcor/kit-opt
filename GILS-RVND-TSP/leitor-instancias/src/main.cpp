@@ -4,6 +4,7 @@
 #include "Solution.h"
 #include <bits/types/time_t.h>
 #include <chrono>
+#include <fstream>
 #include <iostream>
 
 int main(int argc, char **argv) {
@@ -17,7 +18,11 @@ int main(int argc, char **argv) {
   auto data = Data(argc, argv[1]);
   data.read();
   size_t n = data.getDimension();
-  srand(time(NULL));
+  auto seed = time(NULL);
+  srand(seed);
+
+  auto file = ofstream("seed.txt");
+  file << seed << std::endl;
 
   if (!quiet)
     std::cout << "Dimension: " << n << std::endl;
@@ -29,7 +34,6 @@ int main(int argc, char **argv) {
   auto duration =
       std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
 
-  MLP::MLP(&data, true);
   std::cout << data.getInstanceName();
   printf(" - %lf\n", (double)(duration.count()));
 

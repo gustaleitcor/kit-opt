@@ -2,6 +2,7 @@
 #include "MLP.h"
 #include <algorithm>
 #include <cstddef>
+#include <exception>
 
 typedef struct SwapInfo_t {
   size_t i, j;
@@ -36,7 +37,11 @@ bool MLP::bestImprovementSwap(
 
   if (bestSwap.delta < 0) {
     Solution::swap(solution.sequence, bestSwap.i, bestSwap.j);
+    double last_cost = solution.cost;
     Subsequence::updateAllSubseq(solution, subseq_matrix, data);
+    if (solution.cost - last_cost != bestSwap.delta) {
+      throw std::exception();
+    }
     return true;
   }
 
@@ -64,6 +69,8 @@ bool MLP::bestImprovement2Opt(
 
       delta = subsequence.C - subseq_matrix[0][n - 1].C;
 
+      // std::cout << i << " " << j << " " << delta << std::endl;
+
       if (delta < best2opt.delta) {
         best2opt.i = i;
         best2opt.j = j;
@@ -72,9 +79,19 @@ bool MLP::bestImprovement2Opt(
     }
 
   if (best2opt.delta < 0) {
+
+    // solution.printSolution();
+
     reverse(solution.sequence.begin() + best2opt.i,
             solution.sequence.begin() + best2opt.j + 1);
+
+    double last_cost = solution.cost;
+
     Subsequence::updateAllSubseq(solution, subseq_matrix, data);
+
+    if (solution.cost - last_cost != best2opt.delta) {
+      throw std::exception();
+    }
     return true;
   }
 
@@ -92,7 +109,7 @@ bool MLP::bestImprovementOrOpt(
 
   Subsequence subsequence;
   OrOptInfo bestOrOp = (OrOptInfo){.i = 0, .j = 0, .delta = 0};
-  size_t aux, size = solution.sequence.size();
+  size_t aux, size = data->getDimension();
   double delta = 0;
 
   for (size_t i = 1; i < size - n; i++) {
@@ -149,7 +166,11 @@ bool MLP::bestImprovementOrOpt(
       }
     }
 
+    double last_cost = solution.cost;
     Subsequence::updateAllSubseq(solution, subseq_matrix, data);
+    if (solution.cost - last_cost != bestOrOp.delta) {
+      throw std::exception();
+    }
 
     return true;
   }
