@@ -33,11 +33,11 @@ Solution MLP::MLP(Data *data, bool quiet) {
     Subsequence::updateAllSubseq(solution, subseq_matrix, data);
     best = solution;
 
-    //std::cout << "counterIls: " << counterIls << std::endl;
+    // std::cout << "counterIls: " << counterIls << std::endl;
 
     for (int iterIls = 0; iterIls < MAX_ITER_ILS; iterIls++) {
       MLP::BuscaLocal(solution, data, subseq_matrix);
-      //std::cout << "iterIls: " << iterIls << std::endl;
+      // std::cout << "iterIls: " << iterIls << std::endl;
 
       if (solution.cost < best.cost) {
         best = solution;

@@ -18,11 +18,7 @@ int main(int argc, char **argv) {
   auto data = Data(argc, argv[1]);
   data.read();
   size_t n = data.getDimension();
-  auto seed = time(NULL);
-  srand(seed);
-
-  auto file = ofstream("seed.txt");
-  file << seed << std::endl;
+  srand(time(NULL));
 
   if (!quiet)
     std::cout << "Dimension: " << n << std::endl;

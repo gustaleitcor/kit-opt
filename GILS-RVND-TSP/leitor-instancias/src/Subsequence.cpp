@@ -31,7 +31,7 @@ Subsequence Subsequence::concatenate(Subsequence &s, Data *data) {
 void Subsequence::updateAllSubseq(
     Solution &s, std::vector<std::vector<Subsequence>> &subseq_matrix,
     Data *data) {
-  size_t n = subseq_matrix.size()-1;
+  size_t n = subseq_matrix.size();
 
   for (int i = 0; i < n; i++) {
     int v = s.sequence[i];

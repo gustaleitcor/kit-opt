@@ -23,9 +23,9 @@ bool MLP::bestImprovementSwap(
                                              subseq_matrix[j][j], data)
                         .concatenate(subseq_matrix[i + 1][j - 1], data)
                         .concatenate(subseq_matrix[i][i], data)
-                        .concatenate(subseq_matrix[j + 1][n - 1], data);
+                        .concatenate(subseq_matrix[j + 1][n], data);
 
-      delta = subsequence.C - subseq_matrix[0][n - 1].C;
+      delta = subsequence.C - subseq_matrix[0][n].C;
 
       if (delta < bestSwap.delta) {
         bestSwap.i = i;
@@ -39,9 +39,6 @@ bool MLP::bestImprovementSwap(
     Solution::swap(solution.sequence, bestSwap.i, bestSwap.j);
     double last_cost = solution.cost;
     Subsequence::updateAllSubseq(solution, subseq_matrix, data);
-    if (solution.cost - last_cost != bestSwap.delta) {
-      throw std::exception();
-    }
     return true;
   }
 
@@ -65,9 +62,9 @@ bool MLP::bestImprovement2Opt(
     for (int j = i + 2; j < n - 1; j++) {
       subsequence = Subsequence::concatenate(subseq_matrix[0][i - 1],
                                              subseq_matrix[j][i], data)
-                        .concatenate(subseq_matrix[j + 1][n - 1], data);
+                        .concatenate(subseq_matrix[j + 1][n], data);
 
-      delta = subsequence.C - subseq_matrix[0][n - 1].C;
+      delta = subsequence.C - subseq_matrix[0][n].C;
 
       // std::cout << i << " " << j << " " << delta << std::endl;
 
@@ -89,9 +86,6 @@ bool MLP::bestImprovement2Opt(
 
     Subsequence::updateAllSubseq(solution, subseq_matrix, data);
 
-    if (solution.cost - last_cost != best2opt.delta) {
-      throw std::exception();
-    }
     return true;
   }
 
@@ -123,9 +117,9 @@ bool MLP::bestImprovementOrOpt(
             Subsequence::concatenate(subseq_matrix[0][j - 1],
                                      subseq_matrix[i][i + n - 1], data)
                 .concatenate(subseq_matrix[j][i - 1], data)
-                .concatenate(subseq_matrix[i + n][size - 1], data);
+                .concatenate(subseq_matrix[i + n][size ], data);
 
-        delta = subsequence.C - subseq_matrix[0][size - 1].C;
+        delta = subsequence.C - subseq_matrix[0][size].C;
 
         if (delta < bestOrOp.delta) {
           bestOrOp.i = i;
@@ -137,9 +131,9 @@ bool MLP::bestImprovementOrOpt(
         subsequence = Subsequence::concatenate(subseq_matrix[0][i - 1],
                                                subseq_matrix[i + n][j], data)
                           .concatenate(subseq_matrix[i][i + n - 1], data)
-                          .concatenate(subseq_matrix[j + 1][size - 1], data);
+                          .concatenate(subseq_matrix[j + 1][size], data);
 
-        delta = subsequence.C - subseq_matrix[0][size - 1].C;
+        delta = subsequence.C - subseq_matrix[0][size].C;
 
         if (delta < bestOrOp.delta) {
           bestOrOp.i = i;
