@@ -43,7 +43,7 @@ void hungarian_print_matrix(int **C, int rows, int cols)
   fprintf(stderr, "\n");
   for (i = 0; i < rows; i++)
   {
-    fprintf(stderr, " [");
+    fprintf(stderr, "%d [", i);
     for (j = 0; j < cols; j++)
     {
       fprintf(stderr, "%d ", C[i][j]);

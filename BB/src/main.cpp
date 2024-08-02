@@ -1,7 +1,11 @@
+#include "Subtour.h"
 #include <iostream>
+#include <utility>
+#include <vector>
+#include "Subtour.h"
 using namespace std;
 
-#include "../parser/data.h"
+#include "../../parser/data.h"
 #include "hungarian.h"
 
 int main(int argc, char** argv) {
@@ -21,11 +25,15 @@ int main(int argc, char** argv) {
 	int mode = HUNGARIAN_MODE_MINIMIZE_COST;
 	hungarian_init(&p, matrix_cost, data->getDimension(), data->getDimension(), mode); // Carregando o problema
 
-	double obj_value = hungarian_solve(&p);
-	cout << "Obj. value: " << obj_value << endl;
+	double initial_cost = hungarian_solve(&p);
 
-	cout << "Assignment" << endl;
-	hungarian_print_assignment(&p);
+	std::cout << "initial_cost: " << initial_cost << std::endl;
+
+	
+
+	std::vector<Subtour::Subtour_t> subtours = Subtour::findAllSubtours(p);
+
+
 
 	hungarian_free(&p);
 	for (int i = 0; i < data->getDimension(); i++) delete [] matrix_cost[i];
